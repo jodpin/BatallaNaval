@@ -5,44 +5,22 @@
  */
 package data;
 
+public class Barcoc extends Barco {
 
-public class Barcoc {
-    
-    private String Figura1 = " -|- ";
-    private String Figura2 = " |0| ";
-    private String Figura3 = " |0| ";
-    private String Figura4 = " -|- ";
+    public String[] partes;
 
-    public String getFigura1() {
-        return Figura1;
+    public Barcoc() {
+        super(3);
+        partes = new String[super.getTamano()];
+        partes[0] = " -|- ";
+        partes[1] = " |0| ";
+        partes[2] = " -|- ";
     }
 
-    public void setFigura1(String Figura1) {
-        this.Figura1 = Figura1;
-    }
-
-    public String getFigura2() {
-        return Figura2;
-    }
-
-    public void setFigura2(String Figura2) {
-        this.Figura2 = Figura2;
-    }
-
-    public String getFigura3() {
-        return Figura3;
-    }
-
-    public void setFigura3(String Figura3) {
-        this.Figura3 = Figura3;
-    }
-
-    public String getFigura4() {
-        return Figura4;
-    }
-
-    public void setFigura4(String Figura4) {
-        this.Figura4 = Figura4;
+    public void dibujarBarco() {
+        for (int i = 0; i < partes.length; i++) {
+            System.out.println(partes[i]);
+        }
     }
 
 }

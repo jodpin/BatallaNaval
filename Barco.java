@@ -1,32 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package data;
 
 public class Barco {
     
-      
+    
+	
+    public Barco(int tamano){
+        this.tamano = tamano;
+    }
+    
+    
+    private int posicionY;
+    private int posicionX;
     private int tamano;
     
-    public Barco(int tamano, String nombre,int posicionx,int posiciony) {
-        this.tamano = tamano;
-        
-    }
+  
+	
+	public int getPosicionY() {
+		return posicionY;
+	}
+	
+	public void setPosicionY(int posicionY) {
+		this.posicionY = posicionY;
+	}
+	
+	public int getPosicionX() {
+		return posicionX;
+	}
+	
+	public void setPosicionX(int posicionX) {
+		this.posicionX = posicionX;
+	}
+	
+	public int getTamano() {
+		return tamano;
+	}
+	
+	public void setTamano(int tamano) {
+		this.tamano = tamano;
+	}
+    
+    
 
-
-    public void posicion(int x, int y){
-        
-    }
-            
-    public int getTamano() {
-        return tamano;
-    }
-
-    public void setTamano(int tamano) {
-        this.tamano = tamano;
-    }
 
  
 }

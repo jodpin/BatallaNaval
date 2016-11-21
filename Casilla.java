@@ -5,16 +5,26 @@ package data;
 
 public class Casilla {
     
-    int posicionX;
-    int posicionY;
-    boolean estado;
-    String simbolo;
+    private int posicionX;
+    private int posicionY;
+    private boolean estado;
+    private String simbolo;
+    private boolean hayBarco;
 
-    public Casilla(int posicionX, int posicionY, boolean estado, String simbolo) {
+    public Casilla(int posicionX, int posicionY, boolean estado, String simbolo, boolean barco) {
         this.posicionX = posicionX;
         this.posicionY = posicionY;
         this.estado = estado;
         this.simbolo = simbolo;
+        this.hayBarco = barco;
+    }
+
+    public boolean isHayBarco() {
+        return hayBarco;
+    }
+
+    public void setHayBarco(boolean hayBarco) {
+        this.hayBarco = hayBarco;
     }
 
     

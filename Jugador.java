@@ -1,24 +1,23 @@
 package data;
 
+import UI.Tablero;
 import java.util.Random;
 
-import UI.Tablero;
+public final class Jugador implements Player {
 
-public final class JugadorPC implements Player {
-
-    private int numeroAciertos;
-
-   
     private String Nombre;
     private final Tablero tablero;
     private Tablero tablero2;
+    private int numeroAciertos;
+
     Submarino m;
     Barcoc b;
     Lancha l;
     PortaAviones pa;
     SubmarinoB sb;
 
-    public JugadorPC(String Nombre) {
+    public Jugador(String Nombre) {
+
         this.Nombre = Nombre;
         this.tablero = new Tablero();
         tablero2 = new Tablero();
@@ -28,18 +27,95 @@ public final class JugadorPC implements Player {
         pa = new PortaAviones();
         l = new Lancha();
 
+        System.out.println("\n\n UBICAR SUBMARINO");
+        m.dibujarBarco();
         ubicarBarco(this.tablero, m);
+        this.tablero.imprimirTablero();
+        System.out.println("\n\n UBICAR BARCO");
+        b.dibujarBarco();
         ubicarBarco(this.tablero, b);
+        this.tablero.imprimirTablero();
+        System.out.println("\n\n UBICAR PORTA AVIONES");
+        pa.dibujarBarco();
         ubicarBarco(this.tablero, pa);
+        this.tablero.imprimirTablero();
+        System.out.println("\n\n UBICAR SUBMARINO 2");
+        sb.dibujarBarco();
         ubicarBarco(this.tablero, sb);
+        this.tablero.imprimirTablero();
+        System.out.println("\n\n UBICAR LANCHA");
+        l.dibujarBarco();
         ubicarBarco(this.tablero, l);
-        
-        tablero.imprimirTablero();
+        this.tablero.imprimirTablero();
 
-        
     }
     
-     public int getNumeroAciertos() {
+    @Override
+    public void disparar(JugadorPC j){
+            j.getTablero2().imprimirTablero();
+            boolean disparo = false;
+            int x = tablero.pedirCoordenadaX(9);
+            int y = tablero.pedirCoordenadaY(9);
+            while(!disparo){
+            if(j.getTablero().getBoard()[x][y].isEstado()==true){
+                j.getTablero2().board[x][y].setSimbolo("  O  ");
+                j.getTablero().getBoard()[x][y].setEstado(false);
+                disparo = true;
+                
+            }
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==true){
+                j.getTablero2().board[x][y].setSimbolo("  #  ");
+                j.getTablero().getBoard()[x][y].setHayBarco(false);
+                this.setNumeroAciertos(j.getNumeroAciertos()+1);
+                disparo = true;
+                
+           }
+            
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==false){
+                System.out.println("no puede disparar dos veces en la misma casilla");
+                x = tablero.pedirCoordenadaX(9);
+                y = tablero.pedirCoordenadaY(9);
+           }
+            }
+            j.getTablero2().imprimirTablero();
+            
+        }
+    
+       @Override
+    public void disparar(Jugador j) {
+        
+        
+            j.getTablero2().imprimirTablero();
+            boolean disparo = false;
+            int x = tablero.pedirCoordenadaX(9);
+            int y = tablero.pedirCoordenadaY(9);
+            while(!disparo){
+            if(j.getTablero().getBoard()[x][y].isEstado()==true){
+                j.getTablero2().board[x][y].setSimbolo("  O  ");
+                j.getTablero().getBoard()[x][y].setEstado(false);
+                disparo = true;
+                
+            }
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==true){
+                j.getTablero2().board[x][y].setSimbolo("  #  ");
+                j.getTablero().getBoard()[x][y].setHayBarco(false);
+                j.setNumeroAciertos(j.getNumeroAciertos()+1);
+                disparo = true;
+                
+           }
+            
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==false){
+                System.out.println("no puede disparar dos veces en la misma casilla");
+                x = tablero.pedirCoordenadaX(9);
+                y = tablero.pedirCoordenadaY(9);
+           }
+            }
+            j.getTablero2().imprimirTablero();
+    
+    }
+
+
+    public int getNumeroAciertos() {
         return numeroAciertos;
     }
 
@@ -66,37 +142,6 @@ public final class JugadorPC implements Player {
     public Tablero getTablero() {
         return tablero;
     }
-    
-    @Override
-    public void disparar(Jugador j){
-            Random r = new Random();
-            boolean disparo = false;
-            int x = r.nextInt(10);
-            int y = r.nextInt(10);
-            while(!disparo){
-            if(j.getTablero().getBoard()[x][y].isEstado()==true){
-                j.getTablero2().board[x][y].setSimbolo("  O  ");
-                j.getTablero().getBoard()[x][y].setEstado(false);
-                disparo = true;
-                
-            }
-            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==true){
-                j.getTablero2().board[x][y].setSimbolo("  #  ");
-                j.getTablero().getBoard()[x][y].setHayBarco(false);
-                this.setNumeroAciertos(j.getNumeroAciertos()+1);
-                disparo = true;
-                
-           }
-            
-            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==false){
-                
-                x = r.nextInt(10);
-                y = r.nextInt(10);
-           }
-            }
-            j.getTablero2().imprimirTablero();
-            
-        }
 
     @Override
     public void ubicarBarco(Tablero tablero, Submarino m) {
@@ -106,59 +151,62 @@ public final class JugadorPC implements Player {
         boolean ubicacion = false;
         int direccion;
 
-        direccion = rnd.nextInt(2);
-        if(direccion == 0){
-        x = rnd.nextInt(7);
-        y = rnd.nextInt(10);
-        
-        while (!ubicacion) {
-            if (tablero.board[x][y].isEstado() == true && tablero.board[x + 1][y].isEstado() == true
-                    && tablero.board[x + 2][y].isEstado() == true && tablero.board[x + 3][y].isEstado() == true) {
-                ubicacion = true;
-                tablero.board[x][y].setEstado(false);
-                tablero.board[x][y].setHayBarco(true);
-                tablero.board[x][y].setSimbolo(m.partes[0]);
-                tablero.board[x + 1][y].setEstado(false);
-                tablero.board[x + 1][y].setHayBarco(true);
-                tablero.board[x + 1][y].setSimbolo(m.partes[1]);
-                tablero.board[x + 2][y].setEstado(false);
-                tablero.board[x + 2][y].setHayBarco(true);
-                tablero.board[x + 2][y].setSimbolo(m.partes[2]);
-                tablero.board[x + 3][y].setEstado(false);
-                tablero.board[x + 3][y].setHayBarco(true);
-                tablero.board[x + 3][y].setSimbolo(m.partes[3]);
-            } else {
-                ubicacion = false;
-                x = rnd.nextInt(7);
-                y = rnd.nextInt(10);
+        direccion = tablero.pedirOrientacion();
+        if (direccion == 0) {
+            x = tablero.pedirCoordenadaX(6);
+            y = tablero.pedirCoordenadaY(9);
+
+            while (!ubicacion) {
+                if (tablero.board[x][y].isEstado() == true && tablero.board[x + 1][y].isEstado() == true
+                        && tablero.board[x + 2][y].isEstado() == true && tablero.board[x + 3][y].isEstado() == true) {
+                    ubicacion = true;
+                    tablero.board[x][y].setEstado(false);
+                    tablero.board[x][y].setHayBarco(true);
+                    tablero.board[x][y].setSimbolo(m.partes[0]);
+                    tablero.board[x + 1][y].setEstado(false);
+                    tablero.board[x + 1][y].setHayBarco(true);
+                    tablero.board[x + 1][y].setSimbolo(m.partes[1]);
+                    tablero.board[x + 2][y].setEstado(false);
+                    tablero.board[x + 2][y].setHayBarco(true);
+                    tablero.board[x + 2][y].setSimbolo(m.partes[2]);
+                    tablero.board[x + 3][y].setEstado(false);
+                    tablero.board[x + 3][y].setHayBarco(true);
+                    tablero.board[x + 3][y].setSimbolo(m.partes[3]);
+                } else {
+                    ubicacion = false;
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(6);
+                    y = tablero.pedirCoordenadaY(9);
+                }
             }
-        }}
-        else if(direccion == 1){
-        x = rnd.nextInt(10);
-        y = rnd.nextInt(7);
-        
-        while (!ubicacion) {
-            if (tablero.board[x][y].isEstado() == true && tablero.board[x][y + 1].isEstado() == true
-                    && tablero.board[x][y + 2].isEstado() == true && tablero.board[x][y + 3].isEstado() == true) {
-                ubicacion = true;
-                tablero.board[x][y].setEstado(false);
-                tablero.board[x][y].setHayBarco(true);
-                tablero.board[x][y].setSimbolo(m.partes[0]);
-                tablero.board[x][y + 1].setEstado(false);
-                tablero.board[x][y + 1].setHayBarco(true);
-                tablero.board[x][y + 1].setSimbolo(m.partes[1]);
-                tablero.board[x][y + 2].setEstado(false);
-                 tablero.board[x][y + 2].setHayBarco(true);
-                tablero.board[x][y + 2].setSimbolo(m.partes[2]);
-                tablero.board[x][y + 3].setEstado(false);
-                tablero.board[x][y + 3].setHayBarco(true);
-                tablero.board[x][y + 3].setSimbolo(m.partes[3]);
-            } else {
-                ubicacion = false;
-                x = rnd.nextInt(10);
-                y = rnd.nextInt(7);
+        } else if (direccion == 1) {
+            x = tablero.pedirCoordenadaX(9);
+            y = tablero.pedirCoordenadaY(6);
+
+            while (!ubicacion) {
+                if (tablero.board[x][y].isEstado() == true && tablero.board[x][y + 1].isEstado() == true
+                        && tablero.board[x][y + 2].isEstado() == true && tablero.board[x][y + 3].isEstado() == true) {
+                    ubicacion = true;
+                    tablero.board[x][y].setEstado(false);
+                    tablero.board[x][y].setHayBarco(true);
+                    tablero.board[x][y].setSimbolo(m.partes[0]);
+                    tablero.board[x][y + 1].setEstado(false);
+                    tablero.board[x][y + 1].setHayBarco(true);
+                    tablero.board[x][y + 1].setSimbolo(m.partes[1]);
+                    tablero.board[x][y + 2].setEstado(false);
+                    tablero.board[x][y + 2].setHayBarco(true);
+                    tablero.board[x][y + 2].setSimbolo(m.partes[2]);
+                    tablero.board[x][y + 3].setEstado(false);
+                    tablero.board[x][y + 3].setHayBarco(true);
+                    tablero.board[x][y + 3].setSimbolo(m.partes[3]);
+                } else {
+                    ubicacion = false;
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(9);
+                    y = tablero.pedirCoordenadaY(6);
+                }
             }
-        }}
+        }
     }
 
     @Override
@@ -169,10 +217,10 @@ public final class JugadorPC implements Player {
         boolean ubicacion = false;
         int direccion;
 
-        direccion = rnd.nextInt(2);
+        direccion = tablero.pedirOrientacion();
         if (direccion == 0) {
-            x = rnd.nextInt(8);
-            y = rnd.nextInt(10);
+            x = tablero.pedirCoordenadaX(7);
+            y = tablero.pedirCoordenadaY(9);
             while (!ubicacion) {
                 if (tablero.board[x][y].isEstado() == true && tablero.board[x + 1][y].isEstado() == true
                         && tablero.board[x + 1][y].isEstado() == true) {
@@ -189,13 +237,15 @@ public final class JugadorPC implements Player {
 
                 } else {
                     ubicacion = false;
-                    x = rnd.nextInt(8);
-                    y = rnd.nextInt(10);
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(7);
+                    y = tablero.pedirCoordenadaY(9);
+
                 }
             }
         } else if (direccion == 1) {
-            x = rnd.nextInt(8);
-            y = rnd.nextInt(10);
+            x = tablero.pedirCoordenadaX(9);
+            y = tablero.pedirCoordenadaY(7);
             while (!ubicacion) {
                 if (tablero.board[x][y].isEstado() == true && tablero.board[x][y + 1].isEstado() == true
                         && tablero.board[x][y + 2].isEstado() == true) {
@@ -212,8 +262,10 @@ public final class JugadorPC implements Player {
 
                 } else {
                     ubicacion = false;
-                    x = rnd.nextInt(10);
-                    y = rnd.nextInt(8);
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(9);
+                    y = tablero.pedirCoordenadaY(7);
+
                 }
             }
         }
@@ -227,10 +279,10 @@ public final class JugadorPC implements Player {
         Random rnd = new Random();
         boolean ubicacion = false;
 
-        direccion = rnd.nextInt(2);
+        direccion = tablero.pedirOrientacion();
         if (direccion == 0) {
-            x = rnd.nextInt(9);
-            y = rnd.nextInt(10);
+            x = tablero.pedirCoordenadaX(8);
+            y = tablero.pedirCoordenadaY(9);
             while (!ubicacion) {
 
                 if (tablero.board[x][y].isEstado() == true && tablero.board[x + 1][y].isEstado() == true) {
@@ -245,13 +297,15 @@ public final class JugadorPC implements Player {
 
                 } else {
                     ubicacion = false;
-                    x = rnd.nextInt(9);
-                    y = rnd.nextInt(10);
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(8);
+                    y = tablero.pedirCoordenadaY(9);
+
                 }
             }
         } else if (direccion == 1) {
-            x = rnd.nextInt(10);
-            y = rnd.nextInt(9);
+            x = tablero.pedirCoordenadaX(9);
+            y = tablero.pedirCoordenadaY(8);
             while (!ubicacion) {
 
                 if (tablero.board[x][y + 1].isEstado() == true && tablero.board[x][y].isEstado() == true) {
@@ -266,8 +320,10 @@ public final class JugadorPC implements Player {
 
                 } else {
                     ubicacion = false;
-                    x = rnd.nextInt(10);
-                    y = rnd.nextInt(9);
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(9);
+                    y = tablero.pedirCoordenadaY(8);
+
                 }
             }
         }
@@ -281,10 +337,10 @@ public final class JugadorPC implements Player {
         int direccion;
         boolean ubicacion = false;
 
-        direccion = rnd.nextInt(2);
+        direccion = tablero.pedirOrientacion();
         if (direccion == 0) {
-            x = rnd.nextInt(6);
-            y = rnd.nextInt(10);
+            x = tablero.pedirCoordenadaX(5);
+            y = tablero.pedirCoordenadaY(9);
             while (!ubicacion) {
                 if (tablero.board[x][y].isEstado() == true && tablero.board[x + 1][y].isEstado() == true
                         && tablero.board[x + 2][y].isEstado() == true && tablero.board[x + 3][y].isEstado() == true
@@ -307,13 +363,15 @@ public final class JugadorPC implements Player {
                     tablero.board[x + 4][y].setSimbolo(pa.partes[4]);
                 } else {
                     ubicacion = false;
-                    x = rnd.nextInt(6);
-                    y = rnd.nextInt(10);
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(5);
+                    y = tablero.pedirCoordenadaY(9);
+
                 }
             }
         } else if (direccion == 1) {
-            x = rnd.nextInt(10);
-            y = rnd.nextInt(6);
+            x = tablero.pedirCoordenadaX(9);
+            y = tablero.pedirCoordenadaY(5);
             while (!ubicacion) {
                 if (tablero.board[x][y].isEstado() == true && tablero.board[x][y + 1].isEstado() == true
                         && tablero.board[x][y + 2].isEstado() == true && tablero.board[x][y + 3].isEstado() == true
@@ -336,8 +394,10 @@ public final class JugadorPC implements Player {
                     tablero.board[x][y + 4].setSimbolo(pa.partes[4]);
                 } else {
                     ubicacion = false;
-                    x = rnd.nextInt(10);
-                    y = rnd.nextInt(6);
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(9);
+                    y = tablero.pedirCoordenadaY(5);
+
                 }
             }
         }
@@ -351,10 +411,10 @@ public final class JugadorPC implements Player {
         int direccion;
         boolean ubicacion = false;
 
-        direccion = rnd.nextInt(2);
+        direccion = tablero.pedirOrientacion();
         if (direccion == 0) {
-            x = rnd.nextInt(8);
-            y = rnd.nextInt(10);
+            x = tablero.pedirCoordenadaX(7);
+            y = tablero.pedirCoordenadaY(9);
             while (!ubicacion) {
                 if (tablero.board[x][y].isEstado() == true && tablero.board[x + 1][y].isEstado() == true
                         && tablero.board[x + 2][y].isEstado() == true) {
@@ -371,13 +431,15 @@ public final class JugadorPC implements Player {
 
                 } else {
                     ubicacion = false;
-                    x = rnd.nextInt(8);
-                    y = rnd.nextInt(10);
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(7);
+                    y = tablero.pedirCoordenadaY(9);
+
                 }
             }
         } else if (direccion == 1) {
-            x = rnd.nextInt(10);
-            y = rnd.nextInt(8);
+            x = tablero.pedirCoordenadaX(9);
+            y = tablero.pedirCoordenadaY(7);
             while (!ubicacion) {
                 if (tablero.board[x][y].isEstado() == true && tablero.board[x][y + 1].isEstado() == true
                         && tablero.board[x][y + 2].isEstado() == true) {
@@ -393,22 +455,18 @@ public final class JugadorPC implements Player {
                     tablero.board[x][y + 2].setSimbolo(m2.partes[2]);
 
                 } else {
-                    x = rnd.nextInt(10);
-                    y = rnd.nextInt(8);
+
                     ubicacion = false;
+                    System.out.println("esocoja posiciones disponibles");
+                    x = tablero.pedirCoordenadaX(9);
+                    y = tablero.pedirCoordenadaY(7);
                 }
             }
         }
 
     }
 
-    @Override
-    public void disparar(JugadorPC j) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
    
-
    
 
 }
