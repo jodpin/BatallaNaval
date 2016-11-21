@@ -97,7 +97,7 @@ public class Tablero {
                 }}
                 catch(InputMismatchException i){
                     input = new Scanner(System.in);
-                    System.out.println("ingrese valores numericos unicamente");
+                    System.out.println("ingrese valores numericos unicamente entre 1 y 2");
                 }
                 }while(!valorCorrecto);
 		return x-1;
