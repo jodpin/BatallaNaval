@@ -4,13 +4,13 @@ import java.util.Random;
 
 import UI.Tablero;
 
-public final class JugadorPC {
+public final class JugadorPC implements Player {
 
     private int numeroAciertos;
 
    
     private String Nombre;
-    private Tablero tablero;
+    private final Tablero tablero;
     private Tablero tablero2;
     Submarino m;
     Barcoc b;
@@ -66,7 +66,39 @@ public final class JugadorPC {
     public Tablero getTablero() {
         return tablero;
     }
+    
+    @Override
+    public void disparar(Jugador j){
+            Random r = new Random();
+            boolean disparo = false;
+            int x = r.nextInt(10);
+            int y = r.nextInt(10);
+            while(!disparo){
+            if(j.getTablero().getBoard()[x][y].isEstado()==true){
+                j.getTablero2().board[x][y].setSimbolo("  O  ");
+                j.getTablero().getBoard()[x][y].setEstado(false);
+                disparo = true;
+                
+            }
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==true){
+                j.getTablero2().board[x][y].setSimbolo("  #  ");
+                j.getTablero().getBoard()[x][y].setHayBarco(false);
+                this.setNumeroAciertos(j.getNumeroAciertos()+1);
+                disparo = true;
+                
+           }
+            
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==false){
+                
+                x = r.nextInt(10);
+                y = r.nextInt(10);
+           }
+            }
+            j.getTablero2().imprimirTablero();
+            
+        }
 
+    @Override
     public void ubicarBarco(Tablero tablero, Submarino m) {
         Random rnd = new Random();
         int x;
@@ -129,6 +161,7 @@ public final class JugadorPC {
         }}
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, Barcoc m) {
         int x;
         int y;
@@ -186,6 +219,7 @@ public final class JugadorPC {
         }
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, Lancha l) {
         int x;
         int y;
@@ -239,6 +273,7 @@ public final class JugadorPC {
         }
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, PortaAviones pa) {
         Random rnd = new Random();
         int x;
@@ -308,6 +343,7 @@ public final class JugadorPC {
         }
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, SubmarinoB m2) {
         Random rnd = new Random();
         int x;
@@ -365,5 +401,14 @@ public final class JugadorPC {
         }
 
     }
+
+    @Override
+    public void disparar(JugadorPC j) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   
+
+   
 
 }

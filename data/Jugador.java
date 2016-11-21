@@ -3,10 +3,10 @@ package data;
 import UI.Tablero;
 import java.util.Random;
 
-public final class Jugador {
+public final class Jugador implements Player {
 
     private String Nombre;
-    private Tablero tablero;
+    private final Tablero tablero;
     private Tablero tablero2;
     private int numeroAciertos;
 
@@ -20,6 +20,7 @@ public final class Jugador {
 
         this.Nombre = Nombre;
         this.tablero = new Tablero();
+        tablero2 = new Tablero();
         sb = new SubmarinoB();
         m = new Submarino();
         b = new Barcoc();
@@ -49,11 +50,45 @@ public final class Jugador {
 
     }
     
+    @Override
     public void disparar(JugadorPC j){
             j.getTablero2().imprimirTablero();
             boolean disparo = false;
-            int x = tablero.pedirCoordenadaY(9);
-            int y = tablero.pedirCoordenadaX(9);
+            int x = tablero.pedirCoordenadaX(9);
+            int y = tablero.pedirCoordenadaY(9);
+            while(!disparo){
+            if(j.getTablero().getBoard()[x][y].isEstado()==true){
+                j.getTablero2().board[x][y].setSimbolo("  O  ");
+                j.getTablero().getBoard()[x][y].setEstado(false);
+                disparo = true;
+                
+            }
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==true){
+                j.getTablero2().board[x][y].setSimbolo("  #  ");
+                j.getTablero().getBoard()[x][y].setHayBarco(false);
+                this.setNumeroAciertos(j.getNumeroAciertos()+1);
+                disparo = true;
+                
+           }
+            
+            else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==false){
+                System.out.println("no puede disparar dos veces en la misma casilla");
+                x = tablero.pedirCoordenadaX(9);
+                y = tablero.pedirCoordenadaY(9);
+           }
+            }
+            j.getTablero2().imprimirTablero();
+            
+        }
+    
+       @Override
+    public void disparar(Jugador j) {
+        
+        
+            j.getTablero2().imprimirTablero();
+            boolean disparo = false;
+            int x = tablero.pedirCoordenadaX(9);
+            int y = tablero.pedirCoordenadaY(9);
             while(!disparo){
             if(j.getTablero().getBoard()[x][y].isEstado()==true){
                 j.getTablero2().board[x][y].setSimbolo("  O  ");
@@ -71,13 +106,14 @@ public final class Jugador {
             
             else if(j.getTablero().getBoard()[x][y].isEstado()==false && j.getTablero().getBoard()[x][y].isHayBarco()==false){
                 System.out.println("no puede disparar dos veces en la misma casilla");
-                x = tablero.pedirCoordenadaY(9);
-                y = tablero.pedirCoordenadaX(9);
+                x = tablero.pedirCoordenadaX(9);
+                y = tablero.pedirCoordenadaY(9);
            }
             }
             j.getTablero2().imprimirTablero();
-            
-        }
+    
+    }
+
 
     public int getNumeroAciertos() {
         return numeroAciertos;
@@ -107,6 +143,7 @@ public final class Jugador {
         return tablero;
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, Submarino m) {
         Random rnd = new Random();
         int x;
@@ -172,6 +209,7 @@ public final class Jugador {
         }
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, Barcoc m) {
         int x;
         int y;
@@ -233,6 +271,7 @@ public final class Jugador {
         }
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, Lancha l) {
         int x;
         int y;
@@ -290,6 +329,7 @@ public final class Jugador {
         }
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, PortaAviones pa) {
         Random rnd = new Random();
         int x;
@@ -363,6 +403,7 @@ public final class Jugador {
         }
     }
 
+    @Override
     public void ubicarBarco(Tablero tablero, SubmarinoB m2) {
         Random rnd = new Random();
         int x;
@@ -424,5 +465,8 @@ public final class Jugador {
         }
 
     }
+
+   
+   
 
 }
